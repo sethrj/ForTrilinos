@@ -7,7 +7,7 @@ module myoperators
   use fortpetra
   implicit none
 
-  type, extends(TpetraOperator) :: MyOperator
+  type, extends(ForTpetraOperator) :: MyOperator
     contains
     procedure :: apply => apply_my_operator
   end type
@@ -22,8 +22,8 @@ contains
     real(C_DOUBLE), intent(in) :: alpha
     real(C_DOUBLE), intent(in) :: beta
 
+    write(*,*) "Called with ", alpha, beta
     ! TODO
-
   end subroutine
 end module
 
@@ -60,11 +60,14 @@ contains
 
 ! --------------------------------description--------------------------------- !
   FORTRILINOS_UNIT_TEST(TpetraOperator_Build)
-    class(TpetraOperator), allocatable :: op
+    class(ForTpetraOperator), allocatable :: op
+    !class(TpetraOperator), pointer :: generic_op
 
     allocate(op, source=MyOperator())
-    call init_TpetraOperator(op); TEST_IERR()
-
+    call init_ForTpetraOperator(op); TEST_IERR()
+    !generic_op => op
+    !call call_apply(generic_op)
+    call call_apply(op)
     call op%release()
     deallocate(op)
   END_FORTRILINOS_UNIT_TEST(TpetraOperator_Build)

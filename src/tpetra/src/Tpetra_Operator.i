@@ -17,21 +17,41 @@
 // Instantiate the Operator
 // =======================================================================
 
-%include "Tpetra_Operator.hpp"
+//%include "Tpetra_Operator.hpp"
+namespace Tpetra {
+  template <class Scalar = ::Tpetra::Details::DefaultTypes::scalar_type,
+            class LocalOrdinal = ::Tpetra::Details::DefaultTypes::local_ordinal_type,
+            class GlobalOrdinal = ::Tpetra::Details::DefaultTypes::global_ordinal_type,
+            class Node = ::Tpetra::Details::DefaultTypes::node_type>
+class Operator {
+    Operator(); // Disable constructor
+public:
+};
+}
 
 %teuchos_rcp(Tpetra::Operator<SC,LO,GO,NO>)
-%template() Tpetra::Operator<SC,LO,GO,NO>;
+%template(TpetraOperator) Tpetra::Operator<SC,LO,GO,NO>;
+
+%inline %{
+void call_apply(Tpetra::Operator<SC,LO,GO,NO>& op) {
+    Tpetra::MultiVector<SC,LO,GO,NO> x;
+    Tpetra::MultiVector<SC,LO,GO,NO> y;
+    Teuchos::ETransp mode = Teuchos::NO_TRANS;
+
+    op.apply(x, y, mode, 1.23, 0.12);
+}
+%}
 
 // =======================================================================
 // Add the subclass
 // =======================================================================
 
-%teuchos_rcp(TpetraOperator)
+%teuchos_rcp(ForTpetraOperator)
 
 %insert("header") %{
 extern "C" {
 /* Fortran BIND(C) function */
-SwigArrayWrapper swigd_TpetraOperator_apply(
+SwigArrayWrapper swigd_ForTpetraOperator_apply(
         SwigClassWrapper const *fself,
         SwigClassWrapper const *farg1,
         SwigClassWrapper const *farg2,
@@ -42,32 +62,31 @@ SwigArrayWrapper swigd_TpetraOperator_apply(
 }
 %}
 
-%fortranprepend TpetraOperator::~TpetraOperator() %{
+%fortranprepend ForTpetraOperator::~ForTpetraOperator() %{
   type(C_PTR) :: fself_ptr
-  type(TpetraOperatorWrapper), pointer :: handle
-  fself_ptr = swigc_TpetraOperator_fhandle(self%swigdata)
+  type(ForTpetraOperatorHandle), pointer :: handle
+  fself_ptr = swigc_ForTpetraOperator_fhandle(self%swigdata)
   call c_f_pointer(cptr=fself_ptr, fptr=handle)
 %}
 
-%fortranappend TpetraOperator::~TpetraOperator() %{
+%fortranappend ForTpetraOperator::~ForTpetraOperator() %{
   ! Release the allocated handle
   deallocate(handle)
 %}
 
 %inline %{
-  class TpetraOperator : public Tpetra::Operator<SC,LO,GO,NO> {
+  class ForTpetraOperator : public Tpetra::Operator<SC,LO,GO,NO> {
     // Pointer to polymorphic fortran pointer
     void* fhandle_;
    public:
     /* DIRECTOR FUNCTIONS */
-    const void* fhandle() const { return this->fhandle_; }
+    const void* fhandle() const { assert(fhandle_); return this->fhandle_; }
     void init(void* fh) { fhandle_ = fh; }
 
     /* TPETRA */
     typedef Tpetra::MultiVector<SC,LO,GO,NO> MV_type;
     typedef Tpetra::Map<LO,GO,NO> Map_type;
-    TpetraOperator() : fhandle_(NULL) { /* * */ }
-
+    ForTpetraOperator() : fhandle_(NULL) { /* * */ }
 
     virtual Teuchos::RCP<const Map_type> getDomainMap() const { return Teuchos::null; }
     virtual Teuchos::RCP<const Map_type> getRangeMap() const { return Teuchos::null; }
@@ -76,8 +95,10 @@ SwigArrayWrapper swigd_TpetraOperator_apply(
                        Teuchos::ETransp mode, SC alpha, SC beta) const
     {
       /* construct "this" pointer */
+      Teuchos::RCP<ForTpetraOperator> tempthis(
+             const_cast<ForTpetraOperator*>(this) SWIG_NO_NULL_DELETER_0);
       SwigClassWrapper self;
-      self.ptr = const_cast<TpetraOperator*>(this);
+      self.ptr = &tempthis;
       self.mem = SWIG_CREF; // since this function is const
 
       /* convert X -> class wrapper */
@@ -98,44 +119,46 @@ SwigArrayWrapper swigd_TpetraOperator_apply(
       double farg4 = alpha;
       double farg5 = beta;
 
-      swigd_TpetraOperator_apply(&self, &farg1, &farg2, &farg3, &farg4, &farg5);
+      swigd_ForTpetraOperator_apply(&self, &farg1, &farg2, &farg3, &farg4, &farg5);
     }
   };
 %}
 
 %insert("ftypes") %{
-  type :: TpetraOperatorWrapper
-    class(TpetraOperator), pointer :: data
+  type :: ForTpetraOperatorHandle
+    class(ForTpetraOperator), pointer :: data
   end type
 %}
 
 %insert("fpublic") %{
-public :: init_TpetraOperator
+public :: init_ForTpetraOperator
 %}
 
 %insert("fwrapper") %{
 ! Convert a ISO-C class pointer struct into a user Fortran native pointer
-subroutine c_f_pointer_TpetraOperator(clswrap, fptr)
+subroutine c_f_pointer_ForTpetraOperator(clswrap, fptr)
   type(SwigClassWrapper), intent(in) :: clswrap
-  class(TpetraOperator), pointer, intent(out) :: fptr
-  type(TpetraOperatorWrapper), pointer :: handle
+  class(ForTpetraOperator), pointer, intent(out) :: fptr
+  type(ForTpetraOperatorHandle), pointer :: handle
   type(C_PTR) :: fself_ptr
   ! Convert C handle to fortran pointer
-  fself_ptr = swigc_TpetraOperator_fhandle(clswrap)
+  fself_ptr = swigc_ForTpetraOperator_fhandle(clswrap)
   ! *** NOTE *** : gfortran 5 through 7 falsely claim the next line is not standards compliant. Since 'handle' is a scalar and
   ! not an array it should be OK, but TS29113 explicitly removes the interoperability requirement for fptr.
   ! Error: TS 29113/TS 18508: Noninteroperable array FPTR at (1) to C_F_POINTER: Expression is a noninteroperable derived type
   ! see https://gcc.gnu.org/bugzilla/show_bug.cgi?id=84924
   call c_f_pointer(cptr=fself_ptr, fptr=handle)
+  if (.not. associated(handle)) stop 1
   ! Access the pointer inside that
   fptr => handle%data
+  if (.not. associated(fptr)) stop 2
 end subroutine
 
 ! Convert SWIG array wrapper to temporary Fortran string, pass to the fortran
 ! cb function, convert back to SWIG array wrapper.
 ! This function must have input/output arguments compatible with ISO C, and it must be marked with "bind(C)"
-subroutine swigd_TpetraOperator_apply(fself, farg1, farg2, farg3, farg4, farg5) &
-    bind(C, name="swigd_TpetraOperator_apply")
+subroutine swigd_ForTpetraOperator_apply(fself, farg1, farg2, farg3, farg4, farg5) &
+    bind(C, name="swigd_ForTpetraOperator_apply")
   use, intrinsic :: ISO_C_BINDING
   implicit none
   type(SwigClassWrapper), intent(in) :: fself
@@ -145,7 +168,7 @@ subroutine swigd_TpetraOperator_apply(fself, farg1, farg2, farg3, farg4, farg5) 
   real(C_DOUBLE), intent(in) :: farg4
   real(C_DOUBLE), intent(in) :: farg5
 
-  class(TpetraOperator), pointer :: self
+  class(ForTpetraOperator), pointer :: self
   type(TpetraMultiVector) :: x
   type(TpetraMultiVector) :: y
   integer(kind(TeuchosETransp)) :: mode
@@ -153,7 +176,8 @@ subroutine swigd_TpetraOperator_apply(fself, farg1, farg2, farg3, farg4, farg5) 
   real(C_DOUBLE) :: beta
 
   ! Get pointer to Fortran object from class wrapper
-  call c_f_pointer_TpetraOperator(fself, self)
+  call c_f_pointer_ForTpetraOperator(fself, self)
+  if (.not. associated(self)) stop 3
   ! Convert class references to fortran proxy references
   x%swigdata = farg1
   y%swigdata = farg2
@@ -165,13 +189,13 @@ subroutine swigd_TpetraOperator_apply(fself, farg1, farg2, farg3, farg4, farg5) 
   call self%apply(x, y, mode, alpha, beta)
 end subroutine
 
-subroutine init_TpetraOperator(self)
-  class(TpetraOperator), target :: self
-  type(TpetraOperatorWrapper), pointer :: handle
+subroutine init_ForTpetraOperator(self)
+  class(ForTpetraOperator), target :: self
+  type(ForTpetraOperatorHandle), pointer :: handle
   allocate(handle)
   handle%data => self
-  self%swigdata = swigc_new_TpetraOperator()
-  call swigc_TpetraOperator_init(self%swigdata, c_loc(handle))
+  self%swigdata = swigc_new_ForTpetraOperator()
+  call swigc_ForTpetraOperator_init(self%swigdata, c_loc(handle))
 end subroutine
 %}
 
