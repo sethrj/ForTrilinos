@@ -95,7 +95,7 @@ end type
  ! WRAPPER DECLARATIONS
  interface
 function swigc_new_TrilinosSolver() &
-bind(C, name="swigc_new_TrilinosSolver") &
+bind(C, name="_wrap_new_TrilinosSolver") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigClassWrapper
@@ -103,14 +103,14 @@ type(SwigClassWrapper) :: fresult
 end function
 
 subroutine swigc_TrilinosSolver_init__SWIG_0(farg1) &
-bind(C, name="swigc_TrilinosSolver_init__SWIG_0")
+bind(C, name="_wrap_TrilinosSolver_init__SWIG_0")
 use, intrinsic :: ISO_C_BINDING
 import :: SwigClassWrapper
 type(SwigClassWrapper) :: farg1
 end subroutine
 
 subroutine swigc_TrilinosSolver_init__SWIG_1(farg1, farg2) &
-bind(C, name="swigc_TrilinosSolver_init__SWIG_1")
+bind(C, name="_wrap_TrilinosSolver_init__SWIG_1")
 use, intrinsic :: ISO_C_BINDING
 import :: SwigClassWrapper
 type(SwigClassWrapper) :: farg1
@@ -118,7 +118,7 @@ type(SwigClassWrapper) :: farg2
 end subroutine
 
 subroutine swigc_TrilinosSolver_setup_matrix(farg1, farg2) &
-bind(C, name="swigc_TrilinosSolver_setup_matrix")
+bind(C, name="_wrap_TrilinosSolver_setup_matrix")
 use, intrinsic :: ISO_C_BINDING
 import :: SwigClassWrapper
 type(SwigClassWrapper) :: farg1
@@ -126,7 +126,7 @@ type(SwigClassWrapper) :: farg2
 end subroutine
 
 subroutine swigc_TrilinosSolver_setup_operator__SWIG_0(farg1, farg2, farg3, farg4) &
-bind(C, name="swigc_TrilinosSolver_setup_operator__SWIG_0")
+bind(C, name="_wrap_TrilinosSolver_setup_operator__SWIG_0")
 use, intrinsic :: ISO_C_BINDING
 import :: SwigClassWrapper
 type(SwigClassWrapper) :: farg1
@@ -136,7 +136,7 @@ type(SwigClassWrapper) :: farg4
 end subroutine
 
 subroutine swigc_TrilinosSolver_setup_operator__SWIG_1(farg1, farg2, farg3) &
-bind(C, name="swigc_TrilinosSolver_setup_operator__SWIG_1")
+bind(C, name="_wrap_TrilinosSolver_setup_operator__SWIG_1")
 use, intrinsic :: ISO_C_BINDING
 import :: SwigClassWrapper
 type(SwigClassWrapper) :: farg1
@@ -145,7 +145,7 @@ type(SwigClassWrapper) :: farg3
 end subroutine
 
 subroutine swigc_TrilinosSolver_setup_solver(farg1, farg2) &
-bind(C, name="swigc_TrilinosSolver_setup_solver")
+bind(C, name="_wrap_TrilinosSolver_setup_solver")
 use, intrinsic :: ISO_C_BINDING
 import :: SwigClassWrapper
 type(SwigClassWrapper) :: farg1
@@ -153,7 +153,7 @@ type(SwigClassWrapper) :: farg2
 end subroutine
 
 subroutine swigc_TrilinosSolver_solve(farg1, farg2, farg3) &
-bind(C, name="swigc_TrilinosSolver_solve")
+bind(C, name="_wrap_TrilinosSolver_solve")
 use, intrinsic :: ISO_C_BINDING
 import :: SwigClassWrapper
 type(SwigClassWrapper) :: farg1
@@ -162,28 +162,28 @@ type(SwigClassWrapper) :: farg3
 end subroutine
 
 subroutine swigc_TrilinosSolver_finalize(farg1) &
-bind(C, name="swigc_TrilinosSolver_finalize")
+bind(C, name="_wrap_TrilinosSolver_finalize")
 use, intrinsic :: ISO_C_BINDING
 import :: SwigClassWrapper
 type(SwigClassWrapper) :: farg1
 end subroutine
 
 subroutine swigc_delete_TrilinosSolver(farg1) &
-bind(C, name="swigc_delete_TrilinosSolver")
+bind(C, name="_wrap_delete_TrilinosSolver")
 use, intrinsic :: ISO_C_BINDING
 import :: SwigClassWrapper
 type(SwigClassWrapper) :: farg1
 end subroutine
 
   subroutine swigc_assignment_TrilinosSolver(self, other) &
-     bind(C, name="swigc_assignment_TrilinosSolver")
+     bind(C, name="_wrap_assign_TrilinosSolver")
    use, intrinsic :: ISO_C_BINDING
    import :: SwigClassWrapper
    type(SwigClassWrapper), intent(inout) :: self
    type(SwigClassWrapper), intent(in) :: other
   end subroutine
 function swigc_new_TrilinosEigenSolver() &
-bind(C, name="swigc_new_TrilinosEigenSolver") &
+bind(C, name="_wrap_new_TrilinosEigenSolver") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: SwigClassWrapper
@@ -191,14 +191,14 @@ type(SwigClassWrapper) :: fresult
 end function
 
 subroutine swigc_TrilinosEigenSolver_init__SWIG_0(farg1) &
-bind(C, name="swigc_TrilinosEigenSolver_init__SWIG_0")
+bind(C, name="_wrap_TrilinosEigenSolver_init__SWIG_0")
 use, intrinsic :: ISO_C_BINDING
 import :: SwigClassWrapper
 type(SwigClassWrapper) :: farg1
 end subroutine
 
 subroutine swigc_TrilinosEigenSolver_init__SWIG_1(farg1, farg2) &
-bind(C, name="swigc_TrilinosEigenSolver_init__SWIG_1")
+bind(C, name="_wrap_TrilinosEigenSolver_init__SWIG_1")
 use, intrinsic :: ISO_C_BINDING
 import :: SwigClassWrapper
 type(SwigClassWrapper) :: farg1
@@ -206,7 +206,7 @@ type(SwigClassWrapper) :: farg2
 end subroutine
 
 subroutine swigc_TrilinosEigenSolver_setup_matrix(farg1, farg2) &
-bind(C, name="swigc_TrilinosEigenSolver_setup_matrix")
+bind(C, name="_wrap_TrilinosEigenSolver_setup_matrix")
 use, intrinsic :: ISO_C_BINDING
 import :: SwigClassWrapper
 type(SwigClassWrapper) :: farg1
@@ -214,7 +214,7 @@ type(SwigClassWrapper) :: farg2
 end subroutine
 
 subroutine swigc_TrilinosEigenSolver_setup_matrix_rhs(farg1, farg2) &
-bind(C, name="swigc_TrilinosEigenSolver_setup_matrix_rhs")
+bind(C, name="_wrap_TrilinosEigenSolver_setup_matrix_rhs")
 use, intrinsic :: ISO_C_BINDING
 import :: SwigClassWrapper
 type(SwigClassWrapper) :: farg1
@@ -222,7 +222,7 @@ type(SwigClassWrapper) :: farg2
 end subroutine
 
 subroutine swigc_TrilinosEigenSolver_setup_operator__SWIG_0(farg1, farg2, farg3, farg4) &
-bind(C, name="swigc_TrilinosEigenSolver_setup_operator__SWIG_0")
+bind(C, name="_wrap_TrilinosEigenSolver_setup_operator__SWIG_0")
 use, intrinsic :: ISO_C_BINDING
 import :: SwigClassWrapper
 type(SwigClassWrapper) :: farg1
@@ -232,7 +232,7 @@ type(SwigClassWrapper) :: farg4
 end subroutine
 
 subroutine swigc_TrilinosEigenSolver_setup_operator__SWIG_1(farg1, farg2, farg3) &
-bind(C, name="swigc_TrilinosEigenSolver_setup_operator__SWIG_1")
+bind(C, name="_wrap_TrilinosEigenSolver_setup_operator__SWIG_1")
 use, intrinsic :: ISO_C_BINDING
 import :: SwigClassWrapper
 type(SwigClassWrapper) :: farg1
@@ -241,7 +241,7 @@ type(SwigClassWrapper) :: farg3
 end subroutine
 
 subroutine swigc_TrilinosEigenSolver_setup_operator_rhs__SWIG_0(farg1, farg2, farg3, farg4) &
-bind(C, name="swigc_TrilinosEigenSolver_setup_operator_rhs__SWIG_0")
+bind(C, name="_wrap_TrilinosEigenSolver_setup_operator_rhs__SWIG_0")
 use, intrinsic :: ISO_C_BINDING
 import :: SwigClassWrapper
 type(SwigClassWrapper) :: farg1
@@ -251,7 +251,7 @@ type(SwigClassWrapper) :: farg4
 end subroutine
 
 subroutine swigc_TrilinosEigenSolver_setup_operator_rhs__SWIG_1(farg1, farg2, farg3) &
-bind(C, name="swigc_TrilinosEigenSolver_setup_operator_rhs__SWIG_1")
+bind(C, name="_wrap_TrilinosEigenSolver_setup_operator_rhs__SWIG_1")
 use, intrinsic :: ISO_C_BINDING
 import :: SwigClassWrapper
 type(SwigClassWrapper) :: farg1
@@ -260,7 +260,7 @@ type(SwigClassWrapper) :: farg3
 end subroutine
 
 subroutine swigc_TrilinosEigenSolver_setup_solver(farg1, farg2) &
-bind(C, name="swigc_TrilinosEigenSolver_setup_solver")
+bind(C, name="_wrap_TrilinosEigenSolver_setup_solver")
 use, intrinsic :: ISO_C_BINDING
 import :: SwigClassWrapper
 type(SwigClassWrapper) :: farg1
@@ -268,7 +268,7 @@ type(SwigClassWrapper) :: farg2
 end subroutine
 
 subroutine swigc_TrilinosEigenSolver_solve(farg1, farg2, farg3) &
-bind(C, name="swigc_TrilinosEigenSolver_solve")
+bind(C, name="_wrap_TrilinosEigenSolver_solve")
 use, intrinsic :: ISO_C_BINDING
 import :: SwigClassWrapper
 import :: SwigArrayWrapper
@@ -278,21 +278,21 @@ type(SwigClassWrapper) :: farg3
 end subroutine
 
 subroutine swigc_TrilinosEigenSolver_finalize(farg1) &
-bind(C, name="swigc_TrilinosEigenSolver_finalize")
+bind(C, name="_wrap_TrilinosEigenSolver_finalize")
 use, intrinsic :: ISO_C_BINDING
 import :: SwigClassWrapper
 type(SwigClassWrapper) :: farg1
 end subroutine
 
 subroutine swigc_delete_TrilinosEigenSolver(farg1) &
-bind(C, name="swigc_delete_TrilinosEigenSolver")
+bind(C, name="_wrap_delete_TrilinosEigenSolver")
 use, intrinsic :: ISO_C_BINDING
 import :: SwigClassWrapper
 type(SwigClassWrapper) :: farg1
 end subroutine
 
   subroutine swigc_assignment_TrilinosEigenSolver(self, other) &
-     bind(C, name="swigc_assignment_TrilinosEigenSolver")
+     bind(C, name="_wrap_assign_TrilinosEigenSolver")
    use, intrinsic :: ISO_C_BINDING
    import :: SwigClassWrapper
    type(SwigClassWrapper), intent(inout) :: self
