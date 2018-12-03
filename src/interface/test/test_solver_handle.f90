@@ -318,6 +318,7 @@ program main
   call krylov_list%set('Maximum Iterations', 333)
 
   allocate(op, source=TriDiagOperator(map, A%getColMap()))
+  call init_ForTpetraOperator(op); FORTRILINOS_CHECK_IERR()
 
   ! Step 1: initialize a handle
   call solver_handle%init(comm); FORTRILINOS_CHECK_IERR()

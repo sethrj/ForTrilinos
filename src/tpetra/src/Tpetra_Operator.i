@@ -58,16 +58,6 @@ SwigClassWrapper swigd_ForTpetraOperator_getRangeMap(
 }
 %}
 
-%fortranprepend ForTpetraOperator::ForTpetraOperator() %{
-  type(ForTpetraOperatorHandle), pointer :: handle
-%}
-
-%fortranappend ForTpetraOperator::ForTpetraOperator() %{
-  allocate(handle)
-  handle%data => self
-  call swigc_ForTpetraOperator_init(self%swigdata, c_loc(handle))
-%}
-
 %fortranprepend ForTpetraOperator::~ForTpetraOperator() %{
   type(C_PTR) :: fself_ptr
   type(ForTpetraOperatorHandle), pointer :: handle
@@ -263,5 +253,15 @@ function swigd_ForTpetraOperator_getRangeMap(fself) &
 
   fresult = result%swigdata
 end function
+
+subroutine init_ForTpetraOperator(self)
+  ! Note: subclass should call `self = ForTpetraOperator()` in its
+  ! initialization code *before* doing this
+  class(ForTpetraOperator), target :: self
+  type(ForTpetraOperatorHandle), pointer :: handle
+  allocate(handle)
+  handle%data => self
+  call swigc_ForTpetraOperator_init(self%swigdata, c_loc(handle))
+end subroutine
 %}
 
