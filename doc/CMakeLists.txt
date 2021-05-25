@@ -35,7 +35,7 @@ add_custom_target(doc_pdf)
 add_custom_command(TARGET doc_pdf
   COMMAND "${CMAKE_COMMAND}" -E env
   "LATEXOPTS="
-  latexmk -pdf ForTrilinos
+  latexmk -pdf fortrilinos-tm-header ForTrilinos
   WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/latex"
   COMMENT "Building PDF documentation from LaTeX"
   BYPRODUCTS "${CMAKE_CURRENT_BINARY_DIR}/latex/ForTrilinos.pdf"

@@ -338,7 +338,6 @@ latex_show_urls = 'footnote'
 # latex_keep_old_macro_names = True
 
 latex_additional_files = glob.glob("_static/*")
-#        + ['_static/fortrilinos-tm-header.pdf'])
 
 # If false, no module index is generated.
 latex_domain_indices = False
