@@ -56,7 +56,7 @@ E4S
 
 As of this writing, ForTrilinos is distributed as part of the `E4S Project
 <https://e4s-project.github.io/index.html>` and should be available as a
-pre-built binary :cite:`E4S`.
+pre-built binary.
 
 Spack
 -----
@@ -103,7 +103,7 @@ App infrastructure setup
 ========================
 
 The ForTrilinos installation is optimized for use with the CMake build
-system :ref:`CMake`. To use ForTrilinos as part of your CMake-based Fortran
+system CMake_. To use ForTrilinos as part of your CMake-based Fortran
 app, add
 
 .. code:: cmake
@@ -141,3 +141,5 @@ modules:
 
    use forteuchos
    use fortpetra
+
+.. _CMake : https://cmake.org

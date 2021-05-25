@@ -21,6 +21,7 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 import datetime
+import glob
 import json
 import os
 
@@ -43,7 +44,7 @@ except ImportError:
     print("Download and install using `pip install sphinxcontrib-bibtex`")
 else:
     extensions.append("sphinxcontrib.bibtex")
-    bibtex_bibfiles = ['_static/refs.bib']
+    bibtex_bibfiles = ['_static/references.bib']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -63,8 +64,9 @@ master_doc = 'index'
 project = 'ForTrilinos'
 copyright = '2017–{:%Y}, UT\u2013Battelle/ORNL'.format(datetime.datetime.today())
 all_authors = [
-    "Seth R. Johnson",
+    "Seth R Johnson",
     "Andrey Prokopenko"
+    "Tim Fuller"
 ]
 author = " and ".join(all_authors)
 
@@ -72,7 +74,7 @@ author = " and ".join(all_authors)
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 try:
-    build_dir = os.environ['BUILD_DIR']
+    build_dir = os.environ['CMAKE_CURRENT_BINARY_DIR']
     with open(os.path.join(build_dir, 'version.json'), 'r') as f:
         vers_dat = json.load(f)
 except (KeyError, IOError) as e:
@@ -252,29 +254,59 @@ htmlhelp_basename = 'ForTrilinosdoc'
 # -- Options for LaTeX output ---------------------------------------------
 
 latex_elements = {
-     # The paper size ('letterpaper' or 'a4paper').
-     #
-     # 'papersize': 'letterpaper',
+# The paper size ('letterpaper' or 'a4paper').
+'papersize': 'letterpaper',
 
-     # The font size ('10pt', '11pt' or '12pt').
-     #
-     # 'pointsize': '10pt',
+# The font size ('10pt', '11pt' or '12pt').
+'pointsize': '11pt',
 
-     # Additional stuff for the LaTeX preamble.
-     #
-     # 'preamble': '',
+# Additional stuff for the LaTeX preamble.
+'preamble': r"""
+% Reset styles changed by sphinx.sty
+\usepackage{ornltm-style}
+\usepackage{ornltm-extract}
+\usepackage{sphinxcustom}
+\usepackage{microtype}
+\usepackage{pdfpages}
+""",
 
-     # Latex figure (float) alignment
-     #
-     # 'figure_align': 'htbp',
+# Table of contents
+'tableofcontents': r"""
+\frontmatter
+% Plain page
+\thispagestyle{plain}%
+\phantomsection\addcontentsline{toc}{section}{Contents}
+\tableofcontents
+%
+\cleardoublepage
+\thispagestyle{plain}%
+\phantomsection\addcontentsline{toc}{section}{List of Figures}
+\listoffigures
+%
+\cleardoublepage
+\thispagestyle{plain}%
+\phantomsection\addcontentsline{toc}{section}{List of Tables}
+\listoftables
+\cleardoublepage
+\pagestyle{normal}
+""",
+# No chapter styles needed
+'fncychap': "",
+# Make references more robust to renumbering
+'hyperref': r"""
+\usepackage[hypertexnames=false]{hyperref}
+\usepackage{hypcap}
+\urlstyle{same}
+""",
+'maketitle': r"\includepdf[pages=-]{fortrilinos-tm-header.pdf}",
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'ForTrilinos.tex', 'ForTrilinos Documentation',
-      r' \and '.join(all_authors), 'manual'),
+    (master_doc, 'ForTrilinos.tex', 'ForTrilinos User Manual',
+      r' \and '.join(all_authors), 'howto'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -289,11 +321,11 @@ latex_documents = [
 
 # If true, show page references after internal links.
 #
-# latex_show_pagerefs = False
+latex_show_pagerefs = True
 
 # If true, show URL addresses after external links.
 #
-# latex_show_urls = False
+latex_show_urls = 'footnote'
 
 # Documents to append as an appendix to all manuals.
 #
@@ -305,9 +337,11 @@ latex_documents = [
 #
 # latex_keep_old_macro_names = True
 
+latex_additional_files = glob.glob("_static/*")
+#        + ['_static/fortrilinos-tm-header.pdf'])
+
 # If false, no module index is generated.
-#
-# latex_domain_indices = True
+latex_domain_indices = False
 
 
 # -- Options for manual page output ---------------------------------------
@@ -315,7 +349,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'fortrilinos', 'ForTrilinos Documentation',
+    (master_doc, 'fortrilinos', 'ForTrilinos User Manual',
      [author], 1)
 ]
 
@@ -330,8 +364,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'ForTrilinos', 'ForTrilinos Documentation',
-     author, 'ForTrilinos', 'One line description of project.',
+    (master_doc, 'ForTrilinos', 'ForTrilinos User Manual',
+     author, 'ForTrilinos', 'ForTrilinos User Manual.',
      'Miscellaneous'),
 ]
 
